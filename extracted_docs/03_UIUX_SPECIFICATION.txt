@@ -1,0 +1,732 @@
+=== 03_UIUX_SPECIFICATION.pdf (Pages: 16) ===
+
+--- Page 1 ---
+DOCUMENT 03
+UI/UX Specification
+and Design System
+Screens, components, tokens, responsive and accessibility rules
+Study Topic Extractor
+Version: 1.0
+Status: Initial Specification
+Date: September 28, 2026
+Turn long study material into a focused study roadmap.
+
+
+--- Page 2 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 1
+Table of Contents
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 2
+1. Design Principles
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3
+2. Design System: Tokens
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3
+2.1 Color Tokens
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3
+2.2 Typography Tokens
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4
+2.3 Spacing, Radius, Shadow, Border Tokens
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+3. Breakpoints and Responsive Strategy
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6
+4. Component Library
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6
+4.1 Priority Badge Spec
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+5. Global UX States
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+6. Page Specifications
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+6.1 Landing Page
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+6.2 Dashboard (Phase 2)
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+6.3 Analyze Document Page
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+6.4 Upload Page (Upload PDF tab and drop zone)
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+6.5 Processing State
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+6.6 Results Page
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+6.7 Topic Details Page / Drawer
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+6.8 Topic Relationship Graph (Phase 2)
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+6.9 Exam Focus Mode (Phase 2)
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+6.10 Document History (Phase 2)
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+6.11 Settings
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+6.12 Export Screen
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 13
+7. Exam Focus Mode Content Rules (Phase 2)
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 14
+8. Accessibility Specification
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 14
+8.1 Accessible Error Messages
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 15
+9. Acceptance Criteria
+
+
+--- Page 3 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 2
+1. Design Principles
+  Readability over effects. This is a study tool: text contrast, spacing and hierarchy come first.
+ Modern, minimal, student-friendly. Gen-Z inspired but not childish: soft gradients, rounded
+cards, restrained glass effects.
+ Priority at a glance. HIGH / MEDIUM / LOW is always conveyed by label + icon + color, never color
+alone.
+ Fast and calm. Immediate feedback, honest progress states, no surprise modals.
+ Dark-first, light-complete. Default follows system preference; both themes are first-class and
+use identical tokens.
+
+
+--- Page 4 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 3
+2. Design System: Tokens
+2.1 Color Tokens
+Direction: dark futuristic educational SaaS with blue/purple/cyan accents. Primary dark background is
+#0A0A0A. Glassmorphism is limited to the navbar and modal backdrops (backdrop-filter: blur(12px)),
+never behind body text.
+Token
+Dark theme
+Light theme
+Usage
+--bg
+#0A0A0A
+#FAFAFA
+Page background
+--surface
+#111113
+#FFFFFF
+Sections, sidebar, navbar
+--card
+#16161A
+#FFFFFF
+Cards, inputs
+--border
+#2A2A31
+#E4E4E7
+Dividers, outlines
+--text
+#F4F4F5
+#18181B
+Primary text
+--text-muted
+#A1A1AA
+#52525B
+Secondary text (>= 4.5:1)
+--primary
+#4F46E5
+#4F46E5
+Buttons, active tabs (white text 6.3:1)
+--primary-soft
+#A5B4FC
+#4338CA
+Links, focus accents
+--secondary
+#22D3EE
+#0E7490
+Highlights, LOW priority
+--accent-purple
+#A78BFA
+#6D28D9
+Gradients, hierarchy level 2
+--success
+#4ADE80
+#15803D
+Success states
+--warning
+#FBBF24
+#B45309
+Warnings, MEDIUM priority
+--error
+#F87171
+#B91C1C
+Errors, HIGH priority
+--priority-high
+#F87171
+#B91C1C
+HIGH badge, bar
+--priority-medium
+#FBBF24
+#B45309
+MEDIUM badge, bar
+--priority-low
+#22D3EE
+#0E7490
+LOW badge, bar
+--focus-ring
+#A5B4FC
+#4338CA
+2 px outline, 2 px offset
+Gradient: --gradient-brand: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #06B6D4 100%) used only
+in the hero, logo and primary CTA hover glow.
+2.2 Typography Tokens
+Font family: Inter (variable) for UI and body, JetBrains Mono for code and numbers in tables, both
+self-hosted via next/font. Fallback: system-ui, -apple-system, Segoe UI, Roboto, sans-serif.
+Token
+Desktop size / line height
+Mobile size / line height
+Weight
+display
+48 / 56 px
+34 / 40 px
+700
+h1
+36 / 44 px
+28 / 36 px
+700
+h2
+28 / 36 px
+22 / 30 px
+600
+h3
+22 / 30 px
+20 / 28 px
+600
+h4
+18 / 26 px
+17 / 26 px
+600
+body
+16 / 26 px
+16 / 26 px
+400
+body-sm
+14 / 22 px
+14 / 22 px
+400 / 500
+
+
+--- Page 5 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 4
+Token
+Desktop size / line height
+Mobile size / line height
+Weight
+caption
+12 / 18 px
+12 / 18 px
+500
+mono
+13 / 20 px
+13 / 20 px
+400
+Minimum body size is 16 px; users may scale text to 200% without loss of content.
+2.3 Spacing, Radius, Shadow, Border Tokens
+Category
+Tokens
+Spacing (4 px base)
+space-0=0, 1=4, 2=8, 3=12, 4=16, 5=20, 6=24, 8=32, 10=40, 12=48, 16=64, 20=80,
+24=96 px
+Radius
+sm=6, md=10, lg=14, xl=20, full=9999 px. Cards use lg; buttons and inputs use md;
+badges use full.
+Shadow (light)
+sm: 0 1px 2px rgba(0,0,0,.06); md: 0 4px 12px rgba(0,0,0,.08); lg: 0 12px 32px rgba(0,0,0,.12)
+Shadow (dark)
+sm: 0 1px 2px rgba(0,0,0,.5); md: 0 4px 16px rgba(0,0,0,.5); glow: 0 0 0 1px
+rgba(99,102,241,.4), 0 8px 24px rgba(79,70,229,.25)
+Border
+1 px solid --border; emphasis 1 px --primary-soft; focus 2 px --focus-ring
+Motion
+fast=120 ms, base=200 ms, slow=320 ms; easing cubic-bezier(.2,.8,.2,1). Disabled under
+prefers-reduced-motion.
+Z-index
+base 0, sticky 10, dropdown 20, drawer 30, modal 40, toast 50
+
+
+--- Page 6 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 5
+3. Breakpoints and Responsive Strategy
+Name
+Range
+Layout notes
+Mobile
+< 640 px
+Single column; bottom sheet drawers; tabs scroll horizontally; 16 px page
+padding
+Tablet
+640 - 1023 px
+2-column grids; collapsible sidebar; 24 px padding
+Laptop
+1024 - 1279 px
+Results in 2/3 + 1/3 layout; top navigation; 32 px padding
+Desktop
+1280 - 1535 px
+Max content width 1200 px; persistent side panel
+Large desktop
+>= 1536 px
+Max width 1360 px; three-pane results (list, detail, chart)
+Mobile-first CSS. Touch targets are at least 44 x 44 px. Horizontal scrolling of the page body is never
+allowed; wide tables scroll within their own container.
+
+
+--- Page 7 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 6
+4. Component Library
+Component
+Specification
+States
+Navbar
+64 px height, glass surface, logo left, links center, theme toggle
+and account right; collapses to icon menu on mobile
+default, scrolled (border),
+menu open
+Sidebar (P2)
+240 px, collapsible to 72 px icons; bottom tab bar on mobile
+expanded, collapsed, active
+item
+Button
+Variants primary, secondary, ghost, danger; sizes sm 32, md 40, lg
+48 px
+default, hover, focus, active,
+disabled, loading (spinner +
+aria-busy)
+Input / Textarea
+40 px height, label above, helper and error text below
+default, focus, filled, error,
+disabled
+Text editor
+Textarea with monospace-off body font, live counter n / 150,000,
+clear and sample buttons
+empty, valid, too short, over
+limit
+File uploader
+Dashed drop zone, keyboard-activatable, file chip after selection
+idle, drag-over, uploading,
+ready, error
+Card
+--card, radius lg, padding 20, border, hover lift 2 px
+default, hover, selected,
+loading skeleton
+Badge
+Pill; priority badges show icon + text (HIGH, MEDIUM, LOW)
+3 priorities, neutral, info
+Progress bar
+8 px, rounded, role=progressbar with aria-valuenow
+determinate, indeterminate
+Score bar
+Horizontal bar 0-100 with numeric label and priority color
+3 priorities
+Chart
+Plotly: score distribution bar, priority donut; themed via tokens;
+text alternative table
+loading, empty, error
+Topic card
+Rank, name, score, priority badge, 2-line summary, up to 4
+keyword chips, expand chevron
+collapsed, expanded,
+selected, reviewed (P2)
+Keyword chip
+Pill, 28 px, border, optional count
+default, hover, selected
+(filter)
+Tabs
+role=tablist, arrow-key navigation, underline indicator
+default, active, disabled
+Dropdown /
+Select
+Native select on mobile; custom listbox on desktop
+closed, open, disabled
+Modal
+Centered, max 560 px, focus trap, Escape closes, backdrop blur
+open, closing
+Toast
+Bottom-right (top on mobile), auto-dismiss 5 s, role=status
+success, info, warning, error
+Tooltip
+Shows on hover and focus, 300 ms delay, max 240 px
+hidden, visible
+Empty state
+Illustration (simple SVG), title, one-line help, primary action
+no results, no documents, no
+topics
+Loading state
+Skeleton blocks shaped like final content; spinner only inside
+buttons
+-
+Error state
+Icon, human-readable message from error catalog, Retry button,
+request id in small text
+recoverable, fatal
+4.1 Priority Badge Spec
+Priority
+Score
+Icon + label
+Color token
+Guidance text
+HIGH
+80 - 100
+Filled circle + HIGH
+--priority-high
+Study first
+
+
+--- Page 8 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 7
+Priority
+Score
+Icon + label
+Color token
+Guidance text
+MEDIUM
+50 - 79
+Half circle + MEDIUM
+--priority-medium
+Review next
+LOW
+0 - 49
+Ring + LOW
+--priority-low
+Supporting
+
+
+--- Page 9 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 8
+5. Global UX States
+State
+Behavior
+Loading
+Skeletons for lists and cards. Stage-based progress for analysis. Buttons show spinner and are
+disabled while busy.
+Empty
+Explains why it is empty and offers the next action. Example: no topics found suggests
+providing more text with clear headings.
+Error
+Uses catalog messages (see Technical Requirements). Never shows stack traces. Offers Retry
+and, where useful, guidance.
+Warning banner
+Non-blocking notice (for example LOW_EXTRACTION_QUALITY or low language confidence),
+dismissible.
+Offline
+Toast: You appear to be offline. Retry when connected.
+Long operation
+After 15 s show: Large documents can take longer. Phase 2 offers to continue in the
+background.
+
+
+--- Page 10 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 9
+6. Page Specifications
+Navbar: logo | Analyze | History | Settings | Theme toggle
+Overview: title | Topics 18 | HIGH 6 | MEDIUM 8 | LOW 4 | Export
+Tabs: Topics | Keywords | Hierarchy | Graph | Focus
+Filter: All | HIGH | MEDIUM | LOW | Search
+Topic card 1: rank | name | score | badge | summary
+Topic card 2: rank | name | score | badge | summary
+Topic card 3: rank | name | score | badge | summary
+Score chart (Plotly)
+Topic drawer
+ Figure 1. Results page wireframe (laptop)
+6.1 Landing Page
+Aspect
+Specification
+Purpose
+Explain the value proposition and route users to Analyze.
+Layout
+Single column hero, three-step explainer, feature grid, sample output preview, footer.
+Components
+Navbar, Hero, CTA buttons, Step cards, Sample topic card, Footer.
+User actions
+Click Get Started / Analyze a document; toggle theme; open Settings.
+States
+Default; reduced-motion variant. No loading state (static).
+Responsive
+behavior
+Mobile: stacked; tablet: 2-column feature grid; laptop+: hero split with preview card.
+6.2 Dashboard (Phase 2)
+Aspect
+Specification
+Purpose
+Personal overview: recent documents, study streak, weak areas.
+Layout
+Header with greeting, stat cards row, recent documents list, quick-start card.
+Components
+Stat cards, Document rows, Progress bars, Empty state.
+User actions
+Open a document; start new analysis; delete a document.
+States
+Loading skeleton; empty (no documents); error with retry.
+Responsive
+behavior
+Stat cards 1 / 2 / 4 columns; sidebar collapses to bottom tab bar on mobile.
+6.3 Analyze Document Page
+
+
+--- Page 11 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 10
+Aspect
+Specification
+Purpose
+Primary input screen: paste text or upload PDF, then start analysis.
+Layout
+Centered card (max 880 px) with tabs Paste Text and Upload PDF, title field, Extract Topics button.
+Components
+Tabs, Text editor with counter, File uploader, Title input, Primary button, Helper text on limits and
+privacy.
+User actions
+Paste or type; upload; clear; press Extract Topics; try sample text.
+States
+Idle; text too short (button disabled + hint); over limit (error text); uploading; validation error;
+processing (see Processing State).
+Responsive
+behavior
+Full-width card on mobile; editor min height 240 px mobile, 360 px desktop.
+6.4 Upload Page (Upload PDF tab and drop zone)
+Aspect
+Specification
+Purpose
+Accept a PDF via drag-and-drop or file picker with immediate validation.
+Layout
+Drop zone with dashed border, file summary row after selection, extraction preview and quality
+note.
+Components
+File uploader, File chip (name, size, pages), Progress bar, Quality alert, Remove button.
+User actions
+Select file; drag and drop; remove file; view extracted text preview; proceed to analyze.
+States
+Idle; drag-over; uploading with progress; extracted (preview + quality); invalid type; too large;
+encrypted; no readable text.
+Responsive
+behavior
+Drop zone becomes a tap target on touch devices; preview collapses to accordion.
+6.5 Processing State
+Aspect
+Specification
+Purpose
+Show progress during upload extraction and analysis without blocking the UI.
+Layout
+Full-card overlay in place of the editor with stage list and indeterminate or stage-based progress.
+Components
+Progress bar, Stage list (Extracting, Cleaning, Finding topics, Ranking, Writing summaries), Cancel
+button.
+User actions
+Cancel analysis (aborts request).
+States
+Running; slow (> 15 s hint: large documents take longer); failed (error state with retry); completed
+(auto-navigate).
+Responsive
+behavior
+Same layout at all sizes; stage list becomes a single status line on mobile. Announced through
+aria-live polite.
+6.6 Results Page
+Aspect
+Specification
+Purpose
+Present the study roadmap: overview, ranked topics, keywords, side chart.
+Layout
+Overview strip, tab bar, filter row, topic card list (main), side panel with score distribution and
+keywords.
+
+
+--- Page 12 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 11
+Aspect
+Specification
+Components
+Overview cards, Tabs, Filter chips, Topic cards, Priority badges, Keyword chips, Plotly chart, Export
+button.
+User actions
+Filter by priority; search; open topic detail; switch tabs; export; start new analysis.
+States
+Loading skeleton; results; no topics found (empty state with tips); partial (warning banner); error.
+Responsive
+behavior
+Mobile: single column, side panel becomes a Summary tab. Laptop: 2/3 + 1/3. Large desktop: adds
+persistent detail panel.
+6.7 Topic Details Page / Drawer
+Aspect
+Specification
+Purpose
+Explain one topic: score breakdown, summary, keywords, source sentences, relations, questions.
+Layout
+MVP: right-side drawer (bottom sheet on mobile). Phase 2: full page
+/results/[id]/topics/[topicId].
+Components
+Header with priority badge, Score breakdown bars (tfidf, frequency, position, semantic), Summary,
+Source sentences, Related topics, Possible questions (P2).
+User actions
+Close; next/previous topic; copy summary; mark reviewed (P2).
+States
+Default; no related topics; loading (P2).
+Responsive
+behavior
+Drawer 420 px on desktop; bottom sheet 85% height on mobile; focus trapped, Escape closes.
+6.8 Topic Relationship Graph (Phase 2)
+Aspect
+Specification
+Purpose
+Visualize topic hierarchy and semantic links.
+Layout
+Canvas graph with controls (zoom, fit, layout), legend, side detail on selection.
+Components
+Cytoscape canvas, Legend, Edge-type toggles, Zoom controls, Accessible list alternative.
+User actions
+Pan, zoom, select node, toggle edge types, switch to list view.
+States
+Loading; empty (fewer than 3 topics); large graph (cap 40 nodes); error.
+Responsive
+behavior
+Mobile: graph fullscreen with bottom controls; list view default on screens < 480 px.
+6.9 Exam Focus Mode (Phase 2)
+Aspect
+Specification
+Purpose
+Revision-oriented views: Quick Revision, Normal Study, Deep Study.
+Layout
+Mode selector (segmented control) above a stacked content area.
+Components
+Segmented control, Topic list, Definition cards, Question list, Checklist with progress.
+User actions
+Switch mode; check off topics; reveal answers hint (extractive source); print view.
+States
+Per-mode content; loading questions; none available.
+Responsive
+behavior
+Segmented control becomes a dropdown on mobile; two columns in Deep Study on desktop.
+
+
+--- Page 13 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 12
+6.10 Document History (Phase 2)
+Aspect
+Specification
+Purpose
+List, search and reopen saved analyses.
+Layout
+Table (desktop) or card list (mobile) with title, date, topic count, top priority topics.
+Components
+Search input, Sort dropdown, Rows, Overflow menu, Delete confirmation modal.
+User actions
+Open, rename, delete, export.
+States
+Loading; empty; error; deleting.
+Responsive
+behavior
+Table with sticky header on desktop; cards on mobile.
+6.11 Settings
+Aspect
+Specification
+Purpose
+Theme, default study mode, scoring options, privacy controls.
+Layout
+Sections in a single column: Appearance, Analysis defaults, Data and privacy, Account (P2).
+Components
+Toggle, Radio group, Sliders for weights (Advanced), Number input for max topics, Danger zone.
+User actions
+Change theme; adjust max topics; edit weights (must sum to 1 with live validation); reset defaults;
+delete data (P2).
+States
+Saved toast; validation error; reset confirmation modal.
+Responsive
+behavior
+Single column at all sizes; max width 720 px.
+6.12 Export Screen
+Aspect
+Specification
+Purpose
+Choose format and download results.
+Layout
+Modal (desktop) or full-screen sheet (mobile) with format cards and options.
+Components
+Format cards (PDF, CSV, TXT, MD, JSON), Options (include summaries, keywords, priority filter),
+Download button, Toast.
+User actions
+Select format; toggle options; download; cancel.
+States
+Idle; generating (spinner); success toast; failure toast with retry.
+Responsive
+behavior
+Cards 1 / 2 / 3 columns.
+
+
+--- Page 14 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 13
+7. Exam Focus Mode Content Rules (Phase 2)
+Mode
+Shows
+Hides
+Use case
+Quick Revision
+Top topics (HIGH), important keywords, one-line
+definitions, key concepts checklist
+Explanations,
+relationships,
+questions
+Last-minute revision
+Normal Study
+Topics, subtopics, short explanations, keywords,
+priority
+Detailed explanations,
+questions
+Regular study
+Deep Study
+Topics, subtopics, definitions, relationships,
+concepts, detailed explanations (2 source
+sentences), possible questions
+-
+Exam preparation
+
+
+--- Page 15 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 14
+8. Accessibility Specification
+  Standard: WCAG 2.2 AA.
+ Keyboard: all functionality reachable by keyboard; logical tab order; visible 2 px focus ring; arrow
+keys inside tabs and segmented controls; Escape closes drawers and modals.
+ Contrast: text >= 4.5:1, large text and UI components >= 3:1, verified for both themes.
+ Priority not by color alone: label + icon + position in list.
+ Screen readers: semantic landmarks (header, nav, main, footer), headings in order, labels on all
+inputs, aria-live=polite for processing progress, aria-busy on loading regions.
+ Forms: errors linked with aria-describedby; error summary focus after failed submit.
+ Graph: provide equivalent nested list; nodes focusable; selection announced.
+ Motion: respect prefers-reduced-motion; no auto-playing animation longer than 5 s.
+ Charts: each chart has a data table alternative and text summary.
+8.1 Accessible Error Messages
+Situation
+Message
+Announcement
+Invalid PDF
+Please upload a valid PDF file.
+role=alert
+No text
+We couldn't find readable text in this document.
+role=alert
+Too large
+This document is larger than the supported processing limit.
+role=alert
+Processing failure
+We couldn't analyze this document. Please try again.
+role=alert
+
+
+--- Page 16 ---
+Study Topic Extractor  |  UI/UX Specification and Design System  |  v1.0
+Page 15
+9. Acceptance Criteria
+ 1. All twelve pages implement listed states and responsive behavior (Phase 2 pages when in scope).
+2. Light and dark themes use identical tokens with values above; no hard-coded colors in
+components.
+3. Automated axe scan shows zero critical or serious issues on Analyze, Results and Settings.
+4. Keyboard-only user can complete paste, analyze, filter, open topic, export.
+5. Lighthouse accessibility score >= 95 on Landing and Results.
+6. No horizontal page scroll at 320 px width.
+
+

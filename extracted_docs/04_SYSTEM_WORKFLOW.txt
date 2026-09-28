@@ -1,0 +1,471 @@
+=== 04_SYSTEM_WORKFLOW.pdf (Pages: 12) ===
+
+--- Page 1 ---
+DOCUMENT 04
+System Workflow
+Specification
+End-to-end flows, states, retries, and edge-case behavior
+Study Topic Extractor
+Version: 1.0
+Status: Initial Specification
+Date: September 28, 2026
+Turn long study material into a focused study roadmap.
+
+
+--- Page 2 ---
+Study Topic Extractor  |  System Workflow Specification  |  v1.0
+Page 1
+Table of Contents
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 2
+1. Purpose and Conventions
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3
+2. Flow 1: Text Analysis
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3
+2.1 Step Detail
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3
+2.2 Result Schema (abridged)
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+3. Flow 2: PDF Analysis
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+3.1 Rules
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+3.2 Sequence
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6
+4. Flow 3: Exam Focus Mode (Phase 2)
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 7
+5. Flow 4: Export
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+6. Loading, Empty, and Error States
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+6.1 Retry Behavior
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+7. Edge-Case Behavior Matrix
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+8. Data Flow Summary and Persistence (Phase 2)
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+9. Acceptance Criteria
+
+
+--- Page 3 ---
+Study Topic Extractor  |  System Workflow Specification  |  v1.0
+Page 2
+1. Purpose and Conventions
+This document defines how data and control move through Study Topic Extractor for each user-visible
+flow. Stage names match the pipeline modules in the NLP/AI Specification. Flows marked (P2) are
+Phase 2.
+Term
+Definition
+Analysis
+One execution of the pipeline on one text with one configuration. Produces an Analysis Result.
+Topic
+A ranked study concept (word or phrase) with score, priority, summary, keywords.
+Keyword
+A distinctive term or phrase used for scanning vocabulary; topics may be keywords but not all
+keywords are topics.
+Score
+Importance value 0 to 100 computed from weighted signals.
+Priority
+HIGH, MEDIUM or LOW derived from Score using configurable thresholds.
+Study Roadmap
+The complete structured output shown on the Results page.
+Extraction quality
+0 to 1 estimate of how much readable text a PDF yielded.
+
+
+--- Page 4 ---
+Study Topic Extractor  |  System Workflow Specification  |  v1.0
+Page 3
+2. Flow 1: Text Analysis
+Paste text
+Client validation
+(200 to 150k chars)
+POST /api/analyze
+Server validation
+Clean +
+ section
+Preprocess
+ (spaCy)
+Candidates
+ + TF-IDF
+Semantic (P2)
+ + cluster
+Rank +
+priority
+Hierarchy (P2)
+ + summaries
+Assemble
+ JSON
+Render
+ results
+ Figure 1. Text analysis flow
+2.1 Step Detail
+#
+Step
+Actor
+Description
+Failure handling
+1
+Input
+User
+Pastes or types text in the editor; optional title.
+Counter turns red beyond
+limit; button disabled.
+2
+Client validation
+Frontend
+Trim, check length bounds, strip null characters.
+Inline error; no request
+sent.
+3
+Request
+Frontend
+POST /api/analyze with {text, title?,
+options?}.
+Network failure: toast +
+Retry (see 8.1).
+4
+Server validation
+API
+Pydantic validation, length bounds, language
+sanity check.
+TEXT_TOO_SHORT or
+DOCUMENT_TOO_LARGE
+(422/413).
+5
+Cache lookup
+API
+Key = sha256(normalized text) + sha256(config).
+Hit returns instantly.
+Miss continues.
+6
+Pipeline
+Services
+Clean, section, preprocess, candidates, TF-IDF,
+keywords, rank, priority, summaries. Phase 2 adds
+semantic, cluster, hierarchy, graph.
+Exception becomes
+PROCESSING_FAILED with
+request_id.
+7
+Response
+API
+Analysis Result JSON (see Result Schema).
+-
+8
+Display
+Frontend
+Store in sessionStorage, route to
+/results/{analysis_id}.
+Corrupt storage: show
+error state and offer
+re-run.
+2.2 Result Schema (abridged)
+
+
+--- Page 5 ---
+Study Topic Extractor  |  System Workflow Specification  |  v1.0
+Page 4
+{
+  "analysis_id": "b7e1c0de-...",
+  "document": {"id": null, "title": "Machine Learning Notes", "source_type": "text",
+               "char_count": 5231, "word_count": 812, "section_count": 4, "language": "en"},
+  "stats": {"topics_found": 18, "high": 6, "medium": 8, "low": 4, "processing_ms": 2140},
+  "config": {"weights": {"tfidf": 0.47, "frequency": 0.29, "position": 0.24, "semantic": 0.0},
+             "thresholds": {"high": 80, "medium": 50}, "semantic_enabled": false,
+             "max_topics": 25, "pipeline_version": "1.0.0"},
+  "topics": [
+    {"id": "t_001", "name": "Machine Learning", "normalized": "machine learning",
+     "rank": 1, "score": 95.0, "priority": "HIGH", "ngram_size": 2, "occurrences": 14,
+     "first_position_pct": 0.01,
+     "components": {"tfidf": 0.93, "frequency": 1.0, "position": 0.88, "semantic": null},
+     "summary": "Machine learning is a branch of artificial intelligence ...",
+     "definition": "Machine learning is a branch of artificial intelligence ...",
+     "keywords": ["training", "model", "data"],
+     "parent_id": null, "children_ids": [], "cluster_id": null}
+  ],
+  "keywords": [{"term": "labeled dataset", "score": 0.71, "count": 5}],
+  "hierarchy": null,
+  "graph": null,
+  "warnings": []
+}
+
+
+--- Page 6 ---
+Study Topic Extractor  |  System Workflow Specification  |  v1.0
+Page 5
+3. Flow 2: PDF Analysis
+Select PDF
+Client check
+(type, 10 MB)
+POST /api/upload
+Magic bytes +
+ MIME check
+Encrypted?
+> 200 pages?
+Extract text
+ per page
+Quality score
+OCR? (P2)
+Clean text
+ + preview
+User confirms
+POST /api/analyze
+Results
+ Figure 2. PDF analysis flow
+3.1 Rules
+  The upload endpoint returns extracted text, page count and quality; it does not analyze. This lets
+the user preview and lets Flow 1 run unchanged. The frontend may auto-continue when quality >=
+0.5.
+ Extraction quality: quality = readable_pages / total_pages where a page is readable if it has at
+least 50 characters and at least 60% alphabetic characters after cleaning.
+ Quality < 0.5 but > 0: return text with warning LOW_EXTRACTION_QUALITY; UI shows a dismissible
+banner suggesting OCR (P2) or pasting text.
+ Quality = 0 or no text: MVP returns NO_READABLE_TEXT. Phase 2 with ENABLE_OCR=true attempts OCR
+at 200 DPI on pages without text, capped at 50 pages, then re-scores.
+ Encrypted PDF: PASSWORD_PROTECTED_PDF. The product never asks for or stores PDF passwords in
+MVP.
+ Page or text limit exceeded: DOCUMENT_TOO_LARGE. Suggest splitting the document.
+ Temporary data: PDF bytes are held in memory and released when the request ends. (P2,
+authenticated save: bytes go to private storage.)
+3.2 Sequence
+ Browser              Next.js            FastAPI               Services
+  | select file         |                   |                     |
+  |-------------------->| validate type,size|                     |
+  |                     |--POST /api/upload>| verify magic bytes  |
+  |                     |                   |--extract(bytes)---->| PyMuPDF
+  |                     |                   |<--text,pages,quality|
+  |                     |<--200 {text,...}--|                     |
+  |<--preview + quality-|                   |                     |
+  | click Extract Topics|--POST /api/analyze>|--run_pipeline----->| NLP stages
+  |                     |<--200 result------|<--result------------|
+  |<--navigate results--|                   |                     |
+
+
+--- Page 7 ---
+Study Topic Extractor  |  System Workflow Specification  |  v1.0
+Page 6
+4. Flow 3: Exam Focus Mode (Phase 2)
+Open results
+Select mode
+(Quick / Normal / Deep)
+Filter HIGH +
+MEDIUM topics
+Select revision
+ content
+Generate questions
+ (on demand)
+Render focus
+ dashboard
+ Figure 3. Exam Focus Mode flow
+Mode
+Data required
+Source
+Quick Revision
+HIGH topics, keywords, one-line definitions
+Already in Analysis Result
+Normal Study
+Topics, subtopics, summaries, keywords, priority
+Analysis Result (hierarchy required for
+subtopics)
+Deep Study
+Above + definitions, relationships, source sentences,
+possible questions
+Analysis Result + POST
+/api/documents/{id}/questions (or
+options.include_questions=true)
+Question generation runs on demand, only for HIGH topics by default (max 6 per topic), and is cached
+per analysis run. Template-based generation works offline; LLM enhancement is optional and falls back
+to templates on error or timeout (8 s).
+
+
+--- Page 8 ---
+Study Topic Extractor  |  System Workflow Specification  |  v1.0
+Page 7
+5. Flow 4: Export
+Click Export
+Choose format
+ + options
+POST /api/export
+Validate payload
+ + format
+Render file
+Validate output
+(non-empty, size)
+Stream download
+Toast
+ Figure 4. Export flow
+Format
+Content
+Notes
+PDF
+Title, overview, topics with score, priority, summary,
+keywords; keyword list; (P2) hierarchy
+ReportLab, A4/Letter, uses fonts
+embedded; max 60 pages
+CSV
+Columns: rank, topic, score, priority, keywords, summary,
+occurrences
+UTF-8 with BOM for Excel;
+formula-injection guard (prefix ' on
+cells starting with = + - @)
+TXT
+Plain-text roadmap grouped by priority
+UTF-8, LF line endings
+MD (optional)
+Headings by priority, bullet topics
+-
+JSON (optional)
+The Analysis Result
+-
+
+
+--- Page 9 ---
+Study Topic Extractor  |  System Workflow Specification  |  v1.0
+Page 8
+6. Loading, Empty, and Error States
+Situation
+Behavior
+User message
+Loading (analysis)
+Stage-based progress; Cancel available; UI never
+blocks
+Finding topics...
+Slow (> 15 s)
+Hint appears; P2 offers background processing
+Large documents can take longer.
+Empty document
+Blocked client-side and server-side
+Please provide at least 200 characters
+of study material.
+No topics found
+Result with zero topics and warning
+NO_TOPICS_FOUND; empty state with tips
+We couldn't identify clear topics. Try
+adding more detailed notes.
+Invalid file
+Reject before upload where possible
+Please upload a valid PDF file.
+No readable text
+Suggest paste or OCR (P2)
+We couldn't find readable text in this
+document.
+Too large
+Reject; suggest splitting
+This document is larger than the
+supported processing limit.
+Processing failure
+Show Retry; log request_id
+We couldn't analyze this document.
+Please try again.
+Rate limited
+Countdown from Retry-After
+Too many requests. Please wait a
+moment and try again.
+6.1 Retry Behavior
+  Automatic: GET requests retry up to 2 times with exponential backoff (500 ms, 1.5 s) on network
+errors or 502/503/504. POST analyze, upload and export are not retried automatically.
+ Manual: every error state offers Retry that re-sends the original payload held in memory.
+ 429: the client waits for Retry-After seconds before re-enabling the button.
+ Idempotency: analysis is deterministic and cacheable, so repeating a request is safe.
+
+
+--- Page 10 ---
+Study Topic Extractor  |  System Workflow Specification  |  v1.0
+Page 9
+7. Edge-Case Behavior Matrix
+Case
+Detection
+System behavior
+Extremely large documents
+Length and page checks
+Reject above limits. P2: 30k to 150k chars run as async job
+with polling.
+Very short text
+< 200 chars
+TEXT_TOO_SHORT.
+Short but valid (200 to 600
+chars)
+Length
+Run with warning SHORT_DOCUMENT; TF-IDF blends
+background IDF; fewer topics returned.
+Poor-quality PDF
+Quality < 0.5
+Warning; results still produced.
+Corrupted PDF
+fitz open error
+INVALID_PDF.
+Password-protected PDF
+needs_pass
+PASSWORD_PROTECTED_PDF.
+Scanned PDF
+No text layer
+MVP NO_READABLE_TEXT; P2 OCR.
+Duplicate document (P2)
+Same content hash for
+user
+Return existing document and latest run; option to
+re-analyze.
+Non-English text
+Stopword-ratio language
+check
+Warning LOW_LANGUAGE_CONFIDENCE; proceed with English
+pipeline.
+Math-heavy content
+High ratio of symbols
+Symbols stripped from candidates; warning MATH_CONTENT.
+Repeated content
+Duplicate sentence
+detection
+Duplicates collapsed before counting.
+No identifiable topics
+Zero candidates pass
+filters
+Return empty topics, warning, empty state.
+User navigates away
+mid-analysis
+AbortController
+Request cancelled; server work may finish but result is
+discarded.
+Browser refresh on results
+sessionStorage present
+Results reloaded from session; otherwise prompt to re-run.
+
+
+--- Page 11 ---
+Study Topic Extractor  |  System Workflow Specification  |  v1.0
+Page 10
+8. Data Flow Summary and Persistence (Phase 2)
+Input
+Paste text
+PDF upload
+Ingest
+documents
+document_sections
+Storage (PDF)
+Analysis
+analysis_runs
+topics
+keywords
+clusters
+Derived
+topic_relationships
+generated_questions
+study_sessions
+ Figure 5. Persisted data flow (Phase 2)
+Persistence only happens for authenticated users who opt in (save=true). Deleting a document
+cascades to sections, runs, topics, keywords, relationships, questions and sessions, and removes the
+stored PDF.
+
+
+--- Page 12 ---
+Study Topic Extractor  |  System Workflow Specification  |  v1.0
+Page 11
+9. Acceptance Criteria
+ 1. Each flow behaves as specified for success and each listed failure.
+2. Errors use the catalog messages exactly.
+3. Cancel in Processing State aborts the network request within 200 ms.
+4. PDF flow never writes user files to disk in MVP.
+5. CSV export neutralizes formula injection.
+6. Repeated identical analysis requests return identical topics and scores.
+
+

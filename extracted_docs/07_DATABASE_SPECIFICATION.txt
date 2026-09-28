@@ -1,0 +1,1225 @@
+=== 07_DATABASE_SPECIFICATION.pdf (Pages: 16) ===
+
+--- Page 1 ---
+DOCUMENT 07
+Database Specification
+PostgreSQL / Supabase schema, RLS, indexes, retention, and ER diagram
+Study Topic Extractor
+Version: 1.0
+Status: Initial Specification
+Date: September 28, 2026
+Turn long study material into a focused study roadmap.
+
+
+--- Page 2 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 1
+Table of Contents
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 2
+1. Scope and Principles
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3
+2. Entity-Relationship Diagram
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4
+3. Table Definitions
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4
+3.1 Table: users
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4
+3.2 Table: documents
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+3.3 Table: document_sections
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+3.4 Table: analysis_runs
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6
+3.5 Table: topic_clusters
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6
+3.6 Table: topics
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 7
+3.7 Table: keywords
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+3.8 Table: topic_relationships
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+3.9 Table: generated_questions
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+3.10 Table: study_sessions
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+4. Indexes
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+5. Constraints, Triggers, and Cascading
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+6. Row Level Security
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 13
+7. Data Retention and Privacy
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 14
+8. Migration Order and Seed Data
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 14
+8.1 Mapping From API Result to Tables
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 15
+9. Acceptance Criteria
+
+
+--- Page 3 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 2
+1. Scope and Principles
+The database is Phase 2. The MVP has no database: results live in the client session and the server
+keeps only an in-memory cache. This schema is designed now so the MVP result JSON maps cleanly
+onto it later, and so the schema supports every Phase 2 feature.
+  PostgreSQL 15 on Supabase; migrations with Alembic; SQLAlchemy 2.0 models mirror this
+document exactly.
+ UUID primary keys (gen_random_uuid()), timestamptz timestamps in UTC, snake_case names.
+ Deleting a document or user cascades to all derived data (privacy requirement).
+ The backend enforces ownership in code; Row Level Security is enabled as defense in depth.
+ Analysis output is immutable: re-analysis creates a new analysis_runs row.
+
+
+--- Page 4 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 3
+2. Entity-Relationship Diagram
+1 : N
+1 : N
+1 : N
+1 : N
+1 : N
+1 : N
+1 : N
+1 : N
+1 : N
+1 : N
+N : 1
+users
+id PK
+email
+settings jsonb
+documents
+id PK
+user_id FK
+title
+content_hash
+status
+document_sections
+id PK
+document_id FK
+section_index
+study_sessions
+id PK
+user_id FK
+document_id FK
+mode
+analysis_runs
+id PK
+document_id FK
+user_id FK
+status
+config
+topic_clusters
+id PK
+analysis_run_id FK
+label
+keywords
+id PK
+analysis_run_id FK
+keyword
+topics
+id PK
+analysis_run_id FK
+parent_topic_id FK
+cluster_id FK
+score
+priority
+topic_relationships
+id PK
+topic_a_id FK
+topic_b_id FK
+type
+generated_questions
+id PK
+topic_id FK
+question_text
+ Figure 1. ER diagram (all tables cascade from users and documents)
+Relationship
+Cardinality
+Delete behavior
+users to documents
+1 : N
+CASCADE
+documents to document_sections
+1 : N
+CASCADE
+documents to analysis_runs
+1 : N
+CASCADE
+analysis_runs to topics / keywords / topic_clusters /
+topic_relationships
+1 : N
+CASCADE
+topic_clusters to topics
+1 : N
+SET NULL on topics.cluster_id
+topics to topics (parent)
+1 : N (self)
+SET NULL on parent_topic_id
+topics to generated_questions
+1 : N
+CASCADE
+users and documents to study_sessions
+1 : N
+CASCADE
+
+
+--- Page 5 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 4
+3. Table Definitions
+3.1 Table: users
+Application profile mirroring Supabase auth.users. Created on first sign-in.
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+id
+uuid
+PK, FK auth.users(id)
+No
+-
+Same id as the Supabase
+auth user
+email
+text
+UNIQUE
+No
+-
+Lowercased e-mail
+display_name
+text
+-
+Yes
+NULL
+Optional name
+settings
+jsonb
+-
+No
+'{}'
+Theme, default mode,
+max_topics, weights,
+thresholds
+created_at
+timestampt
+z
+-
+No
+now()
+Creation time
+updated_at
+timestampt
+z
+-
+No
+now()
+Updated by trigger
+3.2 Table: documents
+One uploaded or pasted study document owned by a user.
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+id
+uuid
+PK
+No
+gen_random
+_uuid()
+Document id
+user_id
+uuid
+FK users(id) ON DELETE
+CASCADE
+No
+-
+Owner
+title
+text
+-
+No
+'Untitled
+document'
+Max 120 chars (CHECK)
+source_type
+text
+CHECK in ('text','pdf')
+No
+-
+Origin
+file_path
+text
+-
+Yes
+NULL
+Storage key {user_id}/{do
+cument_id}.pdf for PDFs
+file_size_bytes
+integer
+CHECK >= 0
+Yes
+NULL
+PDF size
+content_hash
+char(64)
+-
+No
+-
+SHA-256 of normalized
+extracted text; duplicate
+detection
+extracted_text
+text
+-
+No
+-
+Cleaned text used for
+analysis
+char_count
+integer
+CHECK 200..150000
+No
+-
+Length
+word_count
+integer
+-
+No
+-
+Word count
+page_count
+integer
+-
+Yes
+NULL
+PDF pages
+extraction_metho
+d
+text
+CHECK in
+('paste','native','ocr')
+No
+'paste'
+How text was obtained
+
+
+--- Page 6 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 5
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+extraction_quali
+ty
+real
+CHECK 0..1
+Yes
+NULL
+PDF extraction quality
+language
+text
+-
+No
+'en'
+Detected language code
+status
+text
+CHECK in ('uploaded','extrac
+ted','analyzing','analyzed','fa
+iled')
+No
+'extracted'
+Lifecycle
+created_at
+timestampt
+z
+-
+No
+now()
+Creation
+updated_at
+timestampt
+z
+-
+No
+now()
+Update
+expires_at
+timestampt
+z
+-
+Yes
+NULL
+Optional retention deadline
+3.3 Table: document_sections
+Detected sections or windows of a document.
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+id
+uuid
+PK
+No
+gen_random
+_uuid()
+Section id
+document_id
+uuid
+FK documents(id) ON
+DELETE CASCADE
+No
+-
+Parent
+section_index
+integer
+UNIQUE(document_id,
+section_index)
+No
+-
+Order, from 0
+heading
+text
+-
+Yes
+NULL
+Heading text
+heading_level
+smallint
+CHECK 1..6
+Yes
+NULL
+Level
+start_char
+integer
+-
+No
+-
+Start offset in extracted_text
+end_char
+integer
+CHECK > start_char
+No
+-
+End offset
+page_start
+integer
+-
+Yes
+NULL
+First page
+page_end
+integer
+-
+Yes
+NULL
+Last page
+token_count
+integer
+-
+No
+-
+Tokens
+3.4 Table: analysis_runs
+One execution of the pipeline for a document.
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+id
+uuid
+PK
+No
+gen_random
+_uuid()
+Run id (equals analysis_id in
+API)
+document_id
+uuid
+FK documents(id) ON
+DELETE CASCADE
+No
+-
+Analyzed document
+user_id
+uuid
+FK users(id) ON DELETE
+CASCADE
+No
+-
+Owner (denormalized for
+RLS)
+
+
+--- Page 7 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 6
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+status
+text
+CHECK in ('queued','running'
+,'succeeded','failed','cancelle
+d')
+No
+'queued'
+Job state
+config
+jsonb
+-
+No
+-
+Weights, thresholds, flags,
+max_topics
+pipeline_version
+text
+-
+No
+-
+Version string
+model_versions
+jsonb
+-
+No
+'{}'
+spaCy, MiniLM, background
+IDF hash
+stats
+jsonb
+-
+No
+'{}'
+topics_found, high, medium,
+low, warnings
+error_code
+text
+-
+Yes
+NULL
+Error catalog code
+processing_ms
+integer
+-
+Yes
+NULL
+Duration
+started_at
+timestampt
+z
+-
+Yes
+NULL
+Start
+finished_at
+timestampt
+z
+-
+Yes
+NULL
+End
+created_at
+timestampt
+z
+-
+No
+now()
+Creation
+3.5 Table: topic_clusters
+Semantic clusters of topics within a run.
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+id
+uuid
+PK
+No
+gen_random
+_uuid()
+Cluster id
+analysis_run_id
+uuid
+FK analysis_runs(id) ON
+DELETE CASCADE
+No
+-
+Run
+cluster_index
+integer
+UNIQUE(analysis_run_id,
+cluster_index)
+No
+-
+Order
+label
+text
+-
+No
+-
+Highest-scoring member
+name
+algorithm
+text
+CHECK in ('agglomerative','k
+means','dbscan')
+No
+'agglomerat
+ive'
+Method
+size
+integer
+CHECK >= 1
+No
+-
+Members
+cohesion
+real
+-
+Yes
+NULL
+Mean intra-cluster cosine
+3.6 Table: topics
+Ranked topics of a run.
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+id
+uuid
+PK
+No
+gen_random
+_uuid()
+Topic id
+
+
+--- Page 8 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 7
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+analysis_run_id
+uuid
+FK analysis_runs(id) ON
+DELETE CASCADE
+No
+-
+Run
+document_id
+uuid
+FK documents(id) ON
+DELETE CASCADE
+No
+-
+Document
+cluster_id
+uuid
+FK topic_clusters(id) ON
+DELETE SET NULL
+Yes
+NULL
+Cluster
+parent_topic_id
+uuid
+FK topics(id) ON DELETE SET
+NULL
+Yes
+NULL
+Hierarchy parent
+name
+text
+-
+No
+-
+Display name
+normalized_name
+text
+UNIQUE(analysis_run_id,
+normalized_name)
+No
+-
+Lemma key
+rank
+integer
+CHECK >= 1
+No
+-
+1 = best
+score
+numeric(4,1
+)
+CHECK 0..100
+No
+-
+Importance score
+priority
+text
+CHECK in
+('HIGH','MEDIUM','LOW')
+No
+-
+Priority label
+ngram_size
+smallint
+CHECK 1..3
+No
+-
+Words in topic
+occurrences
+integer
+CHECK >= 1
+No
+-
+Count
+first_position_p
+ct
+real
+CHECK 0..1
+No
+-
+First occurrence position
+components
+jsonb
+-
+No
+-
+tfidf, frequency, position,
+semantic
+summary
+text
+CHECK length <= 400
+No
+-
+Extractive or hybrid
+summary
+definition
+text
+-
+Yes
+NULL
+Definition sentence
+keywords
+text[]
+-
+No
+'{}'
+Per-topic keywords
+depth
+smallint
+CHECK 0..4
+No
+0
+Hierarchy depth
+created_at
+timestampt
+z
+-
+No
+now()
+Creation
+3.7 Table: keywords
+Document-level keywords of a run.
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+id
+uuid
+PK
+No
+gen_random
+_uuid()
+Keyword id
+analysis_run_id
+uuid
+FK analysis_runs(id) ON
+DELETE CASCADE
+No
+-
+Run
+document_id
+uuid
+FK documents(id) ON
+DELETE CASCADE
+No
+-
+Document
+keyword
+text
+-
+No
+-
+Display form
+
+
+--- Page 9 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 8
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+normalized_keywo
+rd
+text
+UNIQUE(analysis_run_id,
+normalized_keyword)
+No
+-
+Lemma key
+score
+real
+CHECK 0..1
+No
+-
+Normalized score
+occurrences
+integer
+-
+No
+-
+Count
+ngram_size
+smallint
+CHECK 1..3
+No
+-
+Words
+3.8 Table: topic_relationships
+Edges between topics (hierarchy, semantic, cooccurrence).
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+id
+uuid
+PK
+No
+gen_random
+_uuid()
+Edge id
+analysis_run_id
+uuid
+FK analysis_runs(id) ON
+DELETE CASCADE
+No
+-
+Run
+topic_a_id
+uuid
+FK topics(id) ON DELETE
+CASCADE
+No
+-
+Source (parent for hierarchy)
+topic_b_id
+uuid
+FK topics(id) ON DELETE
+CASCADE
+No
+-
+Target (child for hierarchy)
+relationship_typ
+e
+text
+CHECK in ('hierarchy','seman
+tic','cooccurrence')
+No
+-
+Edge type
+similarity_score
+real
+CHECK 0..1
+No
+-
+Evidence / cosine /
+normalized count
+Table
+constraints
+UNIQUE(analysis_run_id,
+topic_a_id, topic_b_id,
+relationship_type); CHECK
+topic_a_id <> topic_b_id
+3.9 Table: generated_questions
+Possible questions per topic.
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+id
+uuid
+PK
+No
+gen_random
+_uuid()
+Question id
+topic_id
+uuid
+FK topics(id) ON DELETE
+CASCADE
+No
+-
+Topic
+document_id
+uuid
+FK documents(id) ON
+DELETE CASCADE
+No
+-
+Document
+question_text
+text
+-
+No
+-
+Question
+question_type
+text
+CHECK in ('definition','explan
+ation','list','comparison','why
+_how','application')
+No
+-
+Template type
+
+
+--- Page 10 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 9
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+difficulty
+text
+CHECK in
+('easy','medium','hard')
+No
+'medium'
+Difficulty
+generation_metho
+d
+text
+CHECK in ('template','llm')
+No
+'template'
+Method
+source_sentence
+text
+-
+Yes
+NULL
+Grounding sentence
+created_at
+timestampt
+z
+-
+No
+now()
+Creation
+3.10 Table: study_sessions
+Exam Focus or study activity records.
+Column
+Type
+Key / constraint
+Nul
+l
+Default
+Description
+id
+uuid
+PK
+No
+gen_random
+_uuid()
+Session id
+user_id
+uuid
+FK users(id) ON DELETE
+CASCADE
+No
+-
+Owner
+document_id
+uuid
+FK documents(id) ON
+DELETE CASCADE
+No
+-
+Document
+analysis_run_id
+uuid
+FK analysis_runs(id) ON
+DELETE CASCADE
+No
+-
+Run studied
+mode
+text
+CHECK in
+('quick','normal','deep')
+No
+-
+Study mode
+reviewed_topic_i
+ds
+uuid[]
+-
+No
+'{}'
+Topics marked reviewed
+started_at
+timestampt
+z
+-
+No
+now()
+Start
+ended_at
+timestampt
+z
+-
+Yes
+NULL
+End
+duration_seconds
+integer
+CHECK >= 0
+Yes
+NULL
+Length
+
+
+--- Page 11 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 10
+4. Indexes
+Index
+Table (columns)
+Purpose
+idx_documents_user_created
+documents (user_id, created_at DESC)
+History listing
+uq_documents_user_hash
+documents (user_id, content_hash) UNIQUE
+Duplicate detection
+idx_documents_expires
+documents (expires_at) WHERE expires_at IS
+NOT NULL
+Retention job
+idx_sections_doc
+document_sections (document_id, section_index)
+Section lookup
+idx_runs_doc_created
+analysis_runs (document_id, created_at DESC)
+Latest run
+idx_runs_user_status
+analysis_runs (user_id, status)
+Job polling
+idx_topics_run_rank
+topics (analysis_run_id, rank)
+Ordered topic list
+idx_topics_run_priority
+topics (analysis_run_id, priority)
+Priority filter
+idx_topics_parent
+topics (parent_topic_id)
+Tree traversal
+idx_keywords_run_score
+keywords (analysis_run_id, score DESC)
+Top keywords
+idx_rel_run_type
+topic_relationships (analysis_run_id,
+relationship_type)
+Graph load
+idx_questions_topic
+generated_questions (topic_id)
+Question lookup
+idx_sessions_user_started
+study_sessions (user_id, started_at DESC)
+Dashboard stats
+
+
+--- Page 12 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 11
+5. Constraints, Triggers, and Cascading
+  All CHECK constraints listed in the table definitions are created in the initial migration.
+ set_updated_at() trigger on users and documents.
+ Deleting a documents row deletes: sections, runs (and therefore topics, keywords, clusters,
+relationships, questions) and sessions. The API also deletes the Storage object; if storage deletion
+fails the row is still deleted and the object key is queued in a storage_cleanup log for retry.
+ Deleting a user (DELETE /api/me) deletes the profile, which cascades to everything owned; then the
+Supabase auth user and the user's Storage prefix {user_id}/ are removed.
+ The application layer enforces max 200 documents per user (configurable) to control storage use.
+
+
+--- Page 13 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 12
+6. Row Level Security
+RLS is enabled on every table. The FastAPI backend connects with a server-side role and enforces
+ownership in its repository layer (every query includes user_id). RLS policies protect against any direct
+access using the public anon key or a user JWT.
+ALTER TABLE documents ENABLE ROW LEVEL SECURITY;
+CREATE POLICY documents_owner ON documents
+  FOR ALL TO authenticated
+  USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());
+-- Child tables inherit ownership through the document:
+ALTER TABLE topics ENABLE ROW LEVEL SECURITY;
+CREATE POLICY topics_owner ON topics FOR SELECT TO authenticated
+  USING (EXISTS (SELECT 1 FROM documents d
+                 WHERE d.id = topics.document_id AND d.user_id = auth.uid()));
+-- Writes to derived tables are performed only by the backend role; no INSERT/UPDATE
+-- policy is granted to `authenticated` for topics, keywords, topic_clusters,
+-- topic_relationships, generated_questions.
+-- Storage: bucket `documents` is private; policy allows access only to
+-- objects whose first path segment equals auth.uid()::text.
+Table
+authenticated
+SELECT
+authenticated write
+anon
+users
+own row
+update own
+settings/display_name
+none
+documents
+own rows
+insert/update/delete own
+none
+document_sections, analysis_runs, topics,
+keywords, topic_clusters, topic_relationships,
+generated_questions
+via owning document
+none (backend only)
+none
+study_sessions
+own rows
+insert/update own
+none
+
+
+--- Page 14 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 13
+7. Data Retention and Privacy
+Data
+Retention
+Documents and derived results
+Kept until the user deletes them; optional expires_at (Settings: keep 30, 90, 180
+days or forever). Default 180 days for new documents. A daily job deletes expired
+rows.
+Stored PDFs
+Same as parent document; deleted with it.
+Failed analysis runs
+Deleted after 30 days.
+Study sessions
+Kept with the document; deleted on cascade.
+Logs
+No document content; retained 30 days.
+Anonymous MVP usage
+No content stored server-side; in-memory cache entries expire within 1 hour.
+Account deletion
+Immediate hard delete of all user data, completed within 24 hours including
+backups purge policy of the provider.
+
+
+--- Page 15 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 14
+8. Migration Order and Seed Data
+ 1. 0001_create_users_documents_sections
+2. 0002_create_analysis_runs_topics_keywords
+3. 0003_create_clusters_relationships_questions_sessions
+4. 0004_indexes_constraints_triggers
+5. 0005_rls_policies_storage
+No seed data is required. Test fixtures are created by tests/factories.py.
+8.1 Mapping From API Result to Tables
+API field
+Table.column
+analysis_id
+analysis_runs.id
+document.*
+documents.*
+config
+analysis_runs.config
+stats
+analysis_runs.stats
+topics[]
+topics (components to JSONB, keywords to text[])
+keywords[]
+keywords
+hierarchy
+topics.parent_topic_id, depth, plus hierarchy rows in
+topic_relationships
+graph.edges[]
+topic_relationships
+warnings[]
+analysis_runs.stats.warnings
+
+
+--- Page 16 ---
+Study Topic Extractor  |  Database Specification  |  v1.0
+Page 15
+9. Acceptance Criteria
+ 1. Alembic upgrade from empty to head succeeds; downgrade to base succeeds.
+2. A user cannot read another user's rows using the anon key or a different user's JWT (verified by
+tests).
+3. Deleting a document removes all rows in dependent tables and the storage object.
+4. Inserting a topic with score 101, priority URGENT, or depth 5 fails.
+5. The Phase 2 API can persist and reload any Analysis Result without loss of fields.
+
+

@@ -1,0 +1,912 @@
+=== 05_FEATURE_SPECIFICATION.pdf (Pages: 15) ===
+
+--- Page 1 ---
+DOCUMENT 05
+Feature Specification
+Feature-by-feature objectives, flows, requirements, and acceptance criteria
+Study Topic Extractor
+Version: 1.0
+Status: Initial Specification
+Date: September 28, 2026
+Turn long study material into a focused study roadmap.
+
+
+--- Page 2 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 1
+Table of Contents
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 2
+1. Feature Catalog
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 2
+1.1 MVP Feature Set
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3
+2. Feature Traceability
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3
+3. Text Input
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3
+4. PDF Upload
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4
+5. PDF Text Extraction
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4
+6. OCR
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+7. Text Preprocessing
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+8. Keyword Extraction
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6
+9. N-gram Extraction
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6
+10. TF-IDF Analysis
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 7
+11. Candidate Topic Generation
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 7
+12. Topic Ranking
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+13. Priority Classification
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+14. Semantic Similarity
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+15. Topic Clustering
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+16. Topic Hierarchy
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+17. Topic Relationship Graph
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+18. Topic Summaries
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+19. Exam Focus Mode
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+20. Question Generation
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+21. Export
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+22. Document History
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 13
+23. User Dashboard
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 13
+24. Settings
+
+
+--- Page 3 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 2
+1. Feature Catalog
+Twenty-two features, each with objective, value, flow, inputs, outputs, backend/frontend/database
+requirements, edge cases, error states and acceptance criteria. Priority levels and thresholds are
+defined once in the NLP/AI Specification and are not restated with different values here.
+ID
+Feature
+Phase
+F01
+Text Input
+MVP
+F02
+PDF Upload
+MVP
+F03
+PDF Text Extraction
+MVP
+F04
+OCR
+Phase 2
+F05
+Text Preprocessing
+MVP
+F06
+Keyword Extraction
+MVP
+F07
+N-gram Extraction
+MVP
+F08
+TF-IDF Analysis
+MVP
+F09
+Candidate Topic Generation
+MVP
+F10
+Topic Ranking
+MVP
+F11
+Priority Classification
+MVP
+F12
+Semantic Similarity
+Phase 2
+F13
+Topic Clustering
+Phase 2
+F14
+Topic Hierarchy
+Phase 2
+F15
+Topic Relationship Graph
+Phase 2
+F16
+Topic Summaries
+MVP
+F17
+Exam Focus Mode
+Phase 2
+F18
+Question Generation
+Phase 2
+F19
+Export
+MVP
+F20
+Document History
+Phase 2
+F21
+User Dashboard
+Phase 2
+F22
+Settings
+MVP (local) / Phase 2
+(account)
+1.1 MVP Feature Set
+F01, F02, F03, F05, F06, F07, F08, F09, F10, F11, F16, F19 and Settings (local) form the MVP.
+Everything else is Phase 2 and must not be started before MVP acceptance criteria pass.
+
+
+--- Page 4 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 3
+2. Feature Traceability
+Feature
+PRD requirement
+Endpoint
+Test class (see Testing
+doc)
+F01 Text Input
+FR-01
+POST /api/analyze
+UT-INPUT, E2E-01
+F02, F03 PDF
+FR-02
+POST /api/upload
+IT-PDF, E2E-01
+F05 - F11
+FR-03 to FR-07
+POST /api/analyze
+UT-NLP, IT-PIPE
+F16 Summaries
+FR-08
+POST /api/analyze
+UT-SUM
+F19 Export
+FR-10
+POST /api/export
+IT-EXPORT, E2E-03
+F12 - F15
+FR-11, FR-12
+POST /api/analyze (P2 flags)
+UT-SEM, IT-GRAPH
+F17, F18
+FR-13
+POST /api/documents/{id}/questions
+IT-Q, E2E-04
+F04 OCR
+FR-14
+POST /api/upload
+IT-OCR
+F20 - F22
+FR-15
+documents, settings
+IT-DB, E2E-05
+3. Text Input
+Feature ID: F01 Phase: MVP
+Aspect
+Specification
+Objective
+Let users paste or type study material for analysis.
+User value
+Zero-friction start without needing a file.
+User flow
+Open Analyze > Paste Text tab > enter text (optional title) > Extract Topics.
+Inputs
+text (200 to 150,000 chars), title (optional, max 120 chars)
+Outputs
+Validated payload sent to analysis.
+Backend requirements
+POST /api/analyze validates length, strips control characters, normalizes Unicode (NFKC).
+Frontend
+requirements
+Textarea with live counter, clear button, sample-text button, disabled state while busy.
+Database
+requirements
+None in MVP. P2: documents row (source_type=text) when save=true.
+Edge cases
+Only whitespace; emoji/RTL text; pasted HTML (tags stripped); 1 MB clipboard paste.
+Error states
+TEXT_TOO_SHORT, DOCUMENT_TOO_LARGE, INVALID_REQUEST.
+Acceptance criteria
+Button enabled only within bounds; counter accurate; sample text produces results in < 3 s.
+4. PDF Upload
+Feature ID: F02 Phase: MVP
+Aspect
+Specification
+Objective
+Accept PDF files safely.
+User value
+Analyze lecture PDFs without copying text.
+
+
+--- Page 5 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 4
+Aspect
+Specification
+User flow
+Analyze > Upload PDF > drop/select file > validation > extraction preview.
+Inputs
+file (application/pdf, <= 10 MB)
+Outputs
+Validated file bytes in memory.
+Backend requirements
+POST /api/upload: extension, MIME and %PDF- magic-byte checks; size limit; streamed read
+with cap.
+Frontend
+requirements
+Drop zone, file chip, progress bar, remove button, error alerts.
+Database
+requirements
+None in MVP. P2: Storage object + documents row.
+Edge cases
+Renamed non-PDF; 0-byte file; double extension; huge file; duplicate upload.
+Error states
+INVALID_FILE_TYPE, INVALID_PDF, FILE_TOO_LARGE, RATE_LIMITED.
+Acceptance criteria
+Non-PDFs rejected client and server side; valid PDF proceeds; no file written to disk in MVP.
+5. PDF Text Extraction
+Feature ID: F03 Phase: MVP
+Aspect
+Specification
+Objective
+Convert PDF pages into clean text with page mapping.
+User value
+Reliable input for NLP.
+User flow
+Automatic after upload validation.
+Inputs
+PDF bytes
+Outputs
+text, page_count, quality (0-1), warnings, page offsets.
+Backend requirements
+pdf_processor.py with PyMuPDF page.get_text("text", sort=True); hyphenation repair;
+header/footer removal; page limit 200.
+Frontend
+requirements
+Preview panel (first 2,000 chars) and quality alert.
+Database
+requirements
+P2: documents.extracted_text, page_count, extraction_quality,
+extraction_method=native.
+Edge cases
+Multi-column layouts; tables; footnotes; ligatures; encrypted; corrupted; tiny text layer.
+Error states
+PASSWORD_PROTECTED_PDF, NO_READABLE_TEXT, DOCUMENT_TOO_LARGE, INVALID_PDF.
+Acceptance criteria
+Text-based 50-page PDF extracts in < 5 s; quality reported; encrypted PDFs give correct error.
+6. OCR
+Feature ID: F04 Phase: Phase 2
+Aspect
+Specification
+Objective
+Extract text from scanned pages.
+User value
+Support photographed or scanned notes.
+User flow
+Automatic when quality < 0.2 and ENABLE_OCR=true, or user chooses Try OCR.
+
+
+--- Page 6 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 5
+Aspect
+Specification
+Inputs
+Pages without text layer
+Outputs
+Recognized text, extraction_method=ocr.
+Backend requirements
+ocr_service.py: render pages at 200 DPI via PyMuPDF, run Tesseract (English), cap 50
+pages, per-page timeout 15 s.
+Frontend
+requirements
+Option banner: Scanned document detected. Try OCR (takes longer).
+Database
+requirements
+documents.extraction_method='ocr'.
+Edge cases
+Handwriting; skewed pages; low resolution; mixed native + scanned.
+Error states
+OCR_UNAVAILABLE (503), NO_READABLE_TEXT.
+Acceptance criteria
+A clean scanned page yields >= 90% character accuracy; OCR never runs unless enabled.
+7. Text Preprocessing
+Feature ID: F05 Phase: MVP
+Aspect
+Specification
+Objective
+Normalize text and produce tokens, lemmas, sentences.
+User value
+Consistent analysis and deduplicated counting.
+User flow
+Internal pipeline stage.
+Inputs
+Raw text
+Outputs
+Sentences, tokens with lemma and POS, cleaned text, character offsets.
+Backend requirements
+text_cleaner.py and text_preprocessor.py (spaCy).
+Frontend
+requirements
+None.
+Database
+requirements
+P2: document_sections store section boundaries.
+Edge cases
+Bullets; numbered lists; code snippets; URLs; tables flattened; Unicode dashes.
+Error states
+PROCESSING_FAILED on unexpected error.
+Acceptance criteria
+Deterministic output; sentence boundaries correct on 95% of gold sentences; offsets map
+back to original text.
+8. Keyword Extraction
+Feature ID: F06 Phase: MVP
+Aspect
+Specification
+Objective
+Extract important terms and phrases.
+User value
+Quick vocabulary scan.
+User flow
+Internal stage; results in Keywords tab and chips.
+Inputs
+Candidates + TF-IDF
+
+
+--- Page 7 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 6
+Aspect
+Specification
+Outputs
+Top 30 keywords with score and count.
+Backend requirements
+keyword_extractor.py: rank candidates by TF-IDF x length boost; filter stop-heavy phrases.
+Frontend
+requirements
+Keyword chips with counts; click to filter topics containing the keyword.
+Database
+requirements
+P2: keywords table.
+Edge cases
+Single-word generic terms; acronyms; hyphenated terms.
+Error states
+-
+Acceptance criteria
+Example: Supervised learning uses labeled datasets to train machine learning
+models yields Supervised Learning, Labeled Dataset, Machine Learning.
+9. N-gram Extraction
+Feature ID: F07 Phase: MVP
+Aspect
+Specification
+Objective
+Generate unigram, bigram and trigram candidates and prefer meaningful phrases.
+User value
+Captures concepts like support vector machine.
+User flow
+Internal stage.
+Inputs
+Lemmatized tokens with POS
+Outputs
+Candidate list with counts, positions, n-gram size.
+Backend requirements
+ngram_extractor.py: POS pattern (ADJ|NOUN)* NOUN; edge stopword filter; min count 2 for
+n >= 2 unless in heading/definition; NPMI >= 0.1; subsumption rule.
+Frontend
+requirements
+None.
+Database
+requirements
+None.
+Edge cases
+Overlapping phrases; acronyms (SVM); capitalized proper nouns; hyphenation.
+Error states
+-
+Acceptance criteria
+support vector machine appears as one trigram topic; machine and learning alone are
+suppressed when they occur almost always inside machine learning.
+10. TF-IDF Analysis
+Feature ID: F08 Phase: MVP
+Aspect
+Specification
+Objective
+Measure term distinctiveness.
+User value
+Highlights what is specific to this document.
+User flow
+Internal stage.
+Inputs
+Candidates, sections
+
+
+--- Page 8 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 7
+Aspect
+Specification
+Outputs
+TF-IDF per candidate normalized 0-1.
+Backend requirements
+tfidf_service.py with scikit-learn TfidfVectorizer (custom analyzer) blended with
+data/background_idf.json.
+Frontend
+requirements
+Score breakdown bar in topic detail.
+Database
+requirements
+P2: stored in topics.components.
+Edge cases
+Single-section documents; very small documents; identical sections.
+Error states
+-
+Acceptance criteria
+Same input yields same TF-IDF; background IDF used when sections < 5.
+11. Candidate Topic Generation
+Feature ID: F09 Phase: MVP
+Aspect
+Specification
+Objective
+Turn candidates into topic candidates.
+User value
+Ensures topics are meaningful study concepts, not fragments.
+User flow
+Internal stage.
+Inputs
+Keywords, n-grams, headings, definition sentences
+Outputs
+Deduplicated topic candidates (max 60).
+Backend requirements
+topic_extractor.py: merge by normalized lemma key, add heading terms, definition
+subjects, capitalized terms; drop generic words.
+Frontend
+requirements
+None.
+Database
+requirements
+None.
+Edge cases
+Synonyms (P2 embeddings); plural/singular variants; abbreviations.
+Error states
+-
+Acceptance criteria
+Expected topics from the spec example are all present; no stopword-only candidates.
+12. Topic Ranking
+Feature ID: F10 Phase: MVP
+Aspect
+Specification
+Objective
+Score every topic 0-100.
+User value
+Tells the student what matters most.
+User flow
+Internal stage; visible as rank and score.
+Inputs
+Candidates with component signals
+Outputs
+Ordered topics with score and component values.
+
+
+--- Page 9 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 8
+Aspect
+Specification
+Backend requirements
+topic_ranker.py: weighted sum of TF-IDF, frequency, position, semantic (weights
+renormalized over enabled signals).
+Frontend
+requirements
+Sorted list, score bar, breakdown in drawer, rank number.
+Database
+requirements
+P2: topics.score, rank, components.
+Edge cases
+Ties (break by occurrences then alphabetical); all components equal; one candidate.
+Error states
+-
+Acceptance criteria
+Worked example (0.82, 0.90, 0.75, 0.88 with full weights) yields 83.5; identical input yields
+identical order.
+13. Priority Classification
+Feature ID: F11 Phase: MVP
+Aspect
+Specification
+Objective
+Map score to HIGH / MEDIUM / LOW.
+User value
+Clear study order.
+User flow
+Automatic.
+Inputs
+Score, thresholds
+Outputs
+priority label per topic.
+Backend requirements
+priority_classifier.py: HIGH >= 80, MEDIUM 50-79, LOW < 50 (configurable).
+Frontend
+requirements
+Priority badge with icon + label; filter chips with counts.
+Database
+requirements
+P2: topics.priority.
+Edge cases
+Score exactly 80 or 50; thresholds changed by user; no HIGH topics.
+Error states
+INVALID_REQUEST if thresholds invalid (high <= medium).
+Acceptance criteria
+Boundary tests pass; label never shown without icon and text.
+14. Semantic Similarity
+Feature ID: F12 Phase: Phase 2
+Aspect
+Specification
+Objective
+Understand meaning beyond exact words.
+User value
+Better relevance and relations.
+User flow
+Internal stage.
+Inputs
+Topic strings, sections
+Outputs
+Embeddings, cosine similarity matrix, semantic relevance signal.
+
+
+--- Page 10 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 9
+Aspect
+Specification
+Backend requirements
+semantic_analyzer.py with all-MiniLM-L6-v2; normalize vectors; relevance = cosine to
+document centroid.
+Frontend
+requirements
+None directly; semantic component in breakdown.
+Database
+requirements
+P2: topics.components.semantic; relationships table.
+Edge cases
+Model load failure; very short topic strings; memory pressure.
+Error states
+SERVICE_UNAVAILABLE (fallback: disable semantic and add warning SEMANTIC_DISABLED).
+Acceptance criteria
+Predicting categories is closer to Classification than to Clustering (cosine ordering test).
+15. Topic Clustering
+Feature ID: F13 Phase: Phase 2
+Aspect
+Specification
+Objective
+Group related topics.
+User value
+Reveals subject structure.
+User flow
+Internal stage.
+Inputs
+Topic embeddings
+Outputs
+Clusters with labels and cohesion.
+Backend requirements
+topic_clusterer.py: agglomerative (average linkage, cosine, threshold 0.45); K-Means
+fallback k = clamp(round(sqrt(n/2)), 2, 8).
+Frontend
+requirements
+Cluster chips and grouping option in results.
+Database
+requirements
+topic_clusters; topics.cluster_id.
+Edge cases
+Fewer than 6 topics (skip); one giant cluster; singleton clusters.
+Error states
+-
+Acceptance criteria
+Machine Learning terms cluster apart from unrelated terms in the evaluation document.
+16. Topic Hierarchy
+Feature ID: F14 Phase: Phase 2
+Aspect
+Specification
+Objective
+Create parent-child structure.
+User value
+Shows what belongs under what.
+User flow
+Internal stage; Hierarchy tab.
+Inputs
+Ranked topics, sentences, embeddings
+Outputs
+Tree (max depth 4) with parent_id, children_ids.
+
+
+--- Page 11 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 10
+Aspect
+Specification
+Backend requirements
+hierarchy_builder.py: lexical head match, pattern rules (types of, such as, includes),
+semantic subsumption; NetworkX maximum spanning arborescence; no cycles.
+Frontend
+requirements
+Collapsible tree with priority badges.
+Database
+requirements
+topics.parent_topic_id, depth; hierarchy rows in topic_relationships.
+Edge cases
+Multiple plausible parents; cycles; orphan topics (top-level); depth overflow.
+Error states
+-
+Acceptance criteria
+Every topic has 0 or 1 parent; no cycles; Supervised Learning is a child of Machine Learning on
+the sample.
+17. Topic Relationship Graph
+Feature ID: F15 Phase: Phase 2
+Aspect
+Specification
+Objective
+Visualize connections.
+User value
+Aids conceptual understanding.
+User flow
+Results > Graph tab.
+Inputs
+Topics, relations
+Outputs
+Graph JSON: nodes (id, label, score, priority, cluster) and edges (source, target, type, weight).
+Backend requirements
+graph_builder.py (NetworkX): hierarchy edges + semantic edges (cosine >= 0.55, top 3 per
+node); cap 40 nodes.
+Frontend
+requirements
+Cytoscape canvas, legend, edge toggles, list alternative.
+Database
+requirements
+topic_relationships.
+Edge cases
+Disconnected components; hub nodes; many nodes.
+Error states
+-
+Acceptance criteria
+Graph renders < 1 s for 40 nodes; keyboard focus and list alternative exist.
+18. Topic Summaries
+Feature ID: F16 Phase: MVP
+Aspect
+Specification
+Objective
+Give a short explanation per topic.
+User value
+Understand a topic without rereading.
+User flow
+Automatic; shown on topic card.
+Inputs
+Topic, sentences
+Outputs
+1 to 2 sentence summary (<= 280 chars) and optional definition.
+
+
+--- Page 12 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 11
+Aspect
+Specification
+Backend requirements
+summarizer.py: extractive sentence scoring; optional LLM hybrid (P2) with strict grounding;
+fallback always extractive.
+Frontend
+requirements
+Summary in card and drawer; copy button.
+Database
+requirements
+topics.summary, definition.
+Edge cases
+No sentence contains the topic; only fragments; duplicate sentences.
+Error states
+-
+Acceptance criteria
+100% of returned topics have a summary that is a substring (extractive) of the source;
+summary <= 280 chars.
+19. Exam Focus Mode
+Feature ID: F17 Phase: Phase 2
+Aspect
+Specification
+Objective
+Revision-oriented views.
+User value
+Efficient exam preparation.
+User flow
+Results > Exam Focus > pick mode.
+Inputs
+Analysis Result, mode
+Outputs
+Mode-specific content.
+Backend requirements
+No new pipeline; uses stored result; question endpoint for Deep Study.
+Frontend
+requirements
+Segmented control, checklists, print styles.
+Database
+requirements
+study_sessions.
+Edge cases
+No HIGH topics; missing hierarchy.
+Error states
+NOT_FOUND, PROCESSING_FAILED.
+Acceptance criteria
+Quick, Normal and Deep show exactly the content defined in the UI/UX specification.
+20. Question Generation
+Feature ID: F18 Phase: Phase 2
+Aspect
+Specification
+Objective
+Produce possible exam questions.
+User value
+Self-testing.
+User flow
+Deep Study > Generate questions.
+Inputs
+Topics, hierarchy, sentences
+Outputs
+3 to 6 questions per HIGH topic with type and difficulty.
+
+
+--- Page 13 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 12
+Aspect
+Specification
+Backend requirements
+question_generator.py: templates by topic role; sibling comparison; optional LLM
+paraphrase.
+Frontend
+requirements
+Question list with type badges.
+Database
+requirements
+generated_questions.
+Edge cases
+Sparse context; topics with no siblings.
+Error states
+LLM_UNAVAILABLE (fallback to templates silently with warning).
+Acceptance criteria
+Every question references a topic in the result; no duplicates; works with LLM disabled.
+21. Export
+Feature ID: F19 Phase: MVP
+Aspect
+Specification
+Objective
+Download results.
+User value
+Offline revision and sharing.
+User flow
+Results > Export > format > download.
+Inputs
+Analysis Result, format, options
+Outputs
+File download.
+Backend requirements
+POST /api/export (MVP, stateless); exporter.py; CSV injection guard.
+Frontend
+requirements
+Export modal, toast feedback.
+Database
+requirements
+None (P2: /api/documents/{id}/export).
+Edge cases
+Empty topics; long summaries; special characters.
+Error states
+INVALID_REQUEST (unknown format), PROCESSING_FAILED.
+Acceptance criteria
+PDF, CSV, TXT open correctly; file name study-roadmap-{slug}-{date}.{ext}.
+22. Document History
+Feature ID: F20 Phase: Phase 2
+Aspect
+Specification
+Objective
+Revisit saved analyses.
+User value
+Continuity across sessions.
+User flow
+History page.
+Inputs
+Authenticated user
+Outputs
+Paginated list.
+Backend requirements
+GET /api/documents with pagination (page size 20), search by title.
+
+
+--- Page 14 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 13
+Aspect
+Specification
+Frontend
+requirements
+Table/cards, search, sort, delete.
+Database
+requirements
+documents, analysis_runs.
+Edge cases
+No documents; deletion of the currently open document.
+Error states
+UNAUTHORIZED, NOT_FOUND.
+Acceptance criteria
+Only the owner's documents are listed; delete cascades fully.
+23. User Dashboard
+Feature ID: F21 Phase: Phase 2
+Aspect
+Specification
+Objective
+Personal overview.
+User value
+Motivation and quick access.
+User flow
+Dashboard page.
+Inputs
+Authenticated user
+Outputs
+Recent documents, study stats.
+Backend requirements
+Aggregated queries over documents, study_sessions.
+Frontend
+requirements
+Stat cards, lists.
+Database
+requirements
+Reads only.
+Edge cases
+New user with no data.
+Error states
+UNAUTHORIZED.
+Acceptance criteria
+Empty state for new users; stats match session records.
+24. Settings
+Feature ID: F22 Phase: MVP (local) / Phase 2 (account)
+Aspect
+Specification
+Objective
+Configure preferences.
+User value
+Personalization.
+User flow
+Settings page.
+Inputs
+Theme, default mode, max topics, weights, thresholds
+Outputs
+Saved preferences applied to analyze options.
+Backend requirements
+P2: GET/PATCH /api/settings. Weights must sum to 1.0 (+/- 0.001); thresholds high >
+medium.
+Frontend
+requirements
+Form with live validation; reset to defaults.
+
+
+--- Page 15 ---
+Study Topic Extractor  |  Feature Specification  |  v1.0
+Page 14
+Aspect
+Specification
+Database
+requirements
+MVP: localStorage. P2: users.settings JSONB.
+Edge cases
+Invalid weights; missing storage.
+Error states
+INVALID_REQUEST.
+Acceptance criteria
+Changing weights changes ordering deterministically; defaults restorable.
+
+

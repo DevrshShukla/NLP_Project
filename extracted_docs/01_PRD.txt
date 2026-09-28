@@ -1,0 +1,558 @@
+=== 01_PRD.pdf (Pages: 14) ===
+
+--- Page 1 ---
+DOCUMENT 01
+Product Requirements
+Document
+PRD - what we are building, for whom, and why
+Study Topic Extractor
+Version: 1.0
+Status: Initial Specification
+Date: September 28, 2026
+Turn long study material into a focused study roadmap.
+
+
+--- Page 2 ---
+Study Topic Extractor  |  Product Requirements Document  |  v1.0
+Page 1
+Table of Contents
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 2
+1. Executive Summary
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 2
+1.1 Document Set and Reading Order
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3
+2. Product Vision
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4
+3. Problem Statement
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4
+3.1 Existing Problem
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4
+3.2 Proposed Solution
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+4. Goals and Non-Goals
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+4.1 Product Goals
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+4.2 Non-Goals
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6
+5. Target Users and Personas
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6
+5.1 User Pain Points
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 7
+6. User Stories and Acceptance Criteria
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+7. User Journey and Core Use Cases
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+7.1 Primary Journey (MVP)
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+7.2 Core Use Cases
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+8. Functional Requirements
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+8.1 Non-Functional Requirements
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+9. Scope: MVP, Phase 2, Future
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+10. Success Metrics
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+10.1 Definition of MVP Success
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+11. Constraints, Assumptions, Limitations
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+11.1 Product Constraints
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+11.2 Assumptions
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+11.3 Limitations
+  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 13
+12. Risks and Mitigations
+
+
+--- Page 3 ---
+Study Topic Extractor  |  Product Requirements Document  |  v1.0
+Page 2
+1. Executive Summary
+Study Topic Extractor is an AI/NLP-powered educational productivity platform that converts
+unstructured study material (PDFs, lecture notes, textbook chapters, transcripts, plain text) into a
+structured study roadmap: ranked topics, subtopics, keywords, short explanations, topic
+relationships, and exam-focused revision output.
+The product is not a keyword extractor. Keywords are one input. The output is a prioritized learning
+map that answers one question: "What are the most important things I should study from this
+document?"
+The first release (MVP) uses classical, explainable NLP (spaCy, scikit-learn, TF-IDF, n-grams) with no
+paid API dependency. Semantic embeddings, clustering, hierarchy, graph, Exam Focus Mode, question
+generation, accounts and history follow in Phase 2. LLM assistance is optional and never required for
+the core pipeline.
+1.1 Document Set and Reading Order
+This PRD is document 01 of 14. Terminology defined here (Topic, Keyword, Score, Priority, Analysis,
+Study Roadmap) is used identically in every other document. Engineering agents should read
+MASTER_PROJECT_CONTEXT.pdf first, then the document relevant to their task.
+
+
+--- Page 4 ---
+Study Topic Extractor  |  Product Requirements Document  |  v1.0
+Page 3
+2. Product Vision
+Every student should be able to turn hours of reading into a focused plan in under a minute. The
+product should feel like an intelligent study-analysis platform: fast, trustworthy, explainable, and
+pleasant to use on a phone the night before an exam.
+  Tagline: Turn hours of reading into a focused study roadmap.
+ Positioning: A general-purpose study analyzer. It is not tied to GATE, UPSC or any single exam.
+ Principle: Explainable first. Every score can be traced to visible signals (frequency, distinctiveness,
+position).
+
+
+--- Page 5 ---
+Study Topic Extractor  |  Product Requirements Document  |  v1.0
+Page 4
+3. Problem Statement
+Students receive large volumes of material, often hundreds of pages, and must decide what matters.
+Manual topic extraction is slow, repetitive, inconsistent between students, and hardest for beginners
+who lack the subject knowledge to judge importance.
+3.1 Existing Problem
+Current approach
+Weakness
+Reading everything linearly
+Time-consuming; no prioritization; low retention
+Manual highlighting / topic lists
+Inconsistent; depends on prior knowledge; not reusable
+Generic summarizers
+Produce prose, not a ranked study map; no priority or relationships
+Chatting with a general LLM
+Non-deterministic, not exam-oriented, context-length limits, privacy
+concerns, cost
+Keyword extraction tools
+Flat word lists with no hierarchy, priority, or explanations
+3.2 Proposed Solution
+A web application where the user pastes text or uploads a PDF and receives, within seconds, a ranked
+list of topics with scores, HIGH/MEDIUM/LOW study priority, keywords, extractive summaries, and
+export options. Phase 2 adds subtopic hierarchy, a relationship graph, Exam Focus Mode with possible
+questions, saved history, and progress tracking.
+
+
+--- Page 6 ---
+Study Topic Extractor  |  Product Requirements Document  |  v1.0
+Page 5
+4. Goals and Non-Goals
+4.1 Product Goals
+ 1. G1. Produce a useful ranked topic list from a document in under 10 seconds for typical inputs.
+2. G2. Make priority obvious (HIGH / MEDIUM / LOW) and understandable.
+3. G3. Keep results explainable and deterministic for the same input and configuration.
+4. G4. Protect private academic content (no public exposure, minimal retention).
+5. G5. Be buildable by a student developer with free/open-source tools.
+6. G6. Provide a clean, accessible, responsive experience in light and dark themes.
+4.2 Non-Goals
+  Payments, subscriptions, or social features (sharing, study rooms).
+ Autonomous AI agents or a chat assistant in MVP or Phase 2.
+ Full multilingual NLP in MVP (architecture must allow it later).
+ Replacing textbooks: the product prioritizes, it does not teach.
+ Guaranteeing that ranked topics equal what an examiner will ask. Output is decision support.
+
+
+--- Page 7 ---
+Study Topic Extractor  |  Product Requirements Document  |  v1.0
+Page 6
+5. Target Users and Personas
+Persona
+Profile
+Pain points
+Primary use
+Aarav, engineering
+student
+20, semester exams, 12
+PDFs of slides
+Cannot tell which slide topics
+matter; night-before panic
+Upload PDF, get HIGH topics,
+quick revision
+Meera, GATE aspirant
+23, self-study, dense
+textbooks
+Too much material, needs priority
+and question practice
+Deep Study mode, possible
+questions, history
+Rohan, placement
+candidate
+21, interview prep
+Needs concise concept lists
+(DBMS, OS, CN)
+Paste notes, export topic
+checklist
+Dr. Iyer, teacher
+Prepares revision
+handouts
+Manual topic lists are tedious
+Upload lecture notes, export
+PDF/CSV
+5.1 User Pain Points
+  Information overload and unclear starting point.
+ No feedback on relative importance.
+ Difficulty seeing how topics relate.
+ Revision time is limited; needs a compact view.
+ Concern that uploaded notes are private.
+
+
+--- Page 8 ---
+Study Topic Extractor  |  Product Requirements Document  |  v1.0
+Page 7
+6. User Stories and Acceptance Criteria
+ID
+User story
+Acceptance criteria
+Phase
+US-01
+As a student, I want to upload a PDF so
+that I can identify important topics.
+PDF up to 10 MB / 200 pages accepted; text
+extracted; invalid or encrypted PDFs give the
+specified error; results shown
+MVP
+US-02
+As a student, I want to paste text so that
+I can analyze notes without uploading a
+file.
+Editor accepts 200 to 150,000 chars; live character
+counter; Extract button disabled outside limits
+MVP
+US-03
+As a student, I want topics ranked by
+importance so that I know what to study
+first.
+Topics sorted by score desc; score 0-100; rank
+shown; same input gives same order
+MVP
+US-04
+As a student, I want a priority level per
+topic so that I can plan.
+HIGH >= 80, MEDIUM 50-79, LOW < 50; conveyed by
+label + icon + color
+MVP
+US-05
+As a student, I want topic summaries so
+that I can quickly understand concepts.
+Each returned topic has a 1-2 sentence extractive
+summary drawn from the source
+MVP
+US-06
+As a student, I want keywords so that I
+can scan vocabulary.
+Document-level keyword chips plus per-topic
+keywords
+MVP
+US-07
+As a student, I want to export results so
+that I can revise offline.
+PDF, CSV, TXT downloadable (MD, JSON optional); file
+opens correctly
+MVP
+US-08
+As a student, I want related topics
+grouped so that I understand the
+subject structure.
+Hierarchy tree with max depth 4; each topic has at
+most one parent
+Phase 2
+US-09
+As a student, I want a relationship graph
+so that I can see connections.
+Interactive graph; node size = score; color = priority;
+keyboard accessible
+Phase 2
+US-10
+As a student, I want exam-focused
+output so that I can revise efficiently.
+Quick / Normal / Deep modes show the specified
+content
+Phase 2
+US-11
+As a student, I want possible questions
+so that I can self-test.
+3 to 6 questions per HIGH topic; each linked to a topic
+Phase 2
+US-12
+As a returning user, I want saved
+documents and history so that I can
+revisit analyses.
+Auth required; only owner can see; delete removes
+all data
+Phase 2
+
+
+--- Page 9 ---
+Study Topic Extractor  |  Product Requirements Document  |  v1.0
+Page 8
+7. User Journey and Core Use Cases
+7.1 Primary Journey (MVP)
+Open app
+Upload DBMS_Notes.pdf
+ or paste text
+Click Extract
+ Topics
+Processing
+ state
+Results
+dashboard
+Review HIGH
+ topics
+Export
+checklist
+ Figure 1. MVP user journey
+Example: for DBMS_Notes.pdf the system identifies Functional Dependencies, Normalization, 1NF, 2NF,
+3NF, BCNF, Candidate Keys, Decomposition. HIGH: Normalization, Functional Dependencies, Candidate
+Keys. MEDIUM: BCNF, Decomposition. LOW: supporting concepts.
+7.2 Core Use Cases
+ID
+Use case
+Actor
+Outcome
+UC-01
+Analyze pasted notes
+Any student
+Ranked topics in seconds
+UC-02
+Analyze PDF lecture slides
+Any student
+Ranked topics, extraction-quality warning if
+poor
+UC-03
+Prepare for an exam tomorrow
+Student
+Quick Revision view of HIGH topics (Phase
+2)
+UC-04
+Build practice questions
+Aspirant
+Possible questions per topic (Phase 2)
+UC-05
+Create handout for class
+Teacher
+Export PDF/CSV of topics and summaries
+UC-06
+Return to a past analysis
+Registered user
+Open from history (Phase 2)
+
+
+--- Page 10 ---
+Study Topic Extractor  |  Product Requirements Document  |  v1.0
+Page 9
+8. Functional Requirements
+ID
+Requirement
+Phase
+FR-01
+Accept pasted text (200 to 150,000 chars).
+MVP
+FR-02
+Accept PDF upload (10 MB, 200 pages) and extract text with PyMuPDF.
+MVP
+FR-03
+Clean and preprocess text (normalize, sentences, tokens, lemmas, stopwords).
+MVP
+FR-04
+Generate unigram, bigram, trigram candidates with multi-word preference.
+MVP
+FR-05
+Compute TF-IDF, frequency and position signals; combine into a 0-100 score with
+configurable weights.
+MVP
+FR-06
+Classify priority HIGH/MEDIUM/LOW using configurable thresholds.
+MVP
+FR-07
+Produce document-level keywords and per-topic keywords.
+MVP
+FR-08
+Generate extractive summaries; LLM optional.
+MVP
+FR-09
+Display analysis overview, topic cards, keywords; filter by priority; search topics.
+MVP
+FR-10
+Export PDF, CSV, TXT (and optional MD, JSON).
+MVP
+FR-11
+Sentence-Transformer embeddings, semantic relevance and clustering.
+Phase 2
+FR-12
+Topic hierarchy and relationship graph.
+Phase 2
+FR-13
+Exam Focus Mode (Quick, Normal, Deep) and possible-question generation.
+Phase 2
+FR-14
+OCR for scanned PDFs.
+Phase 2
+FR-15
+Authentication, saved documents, history, settings, study sessions.
+Phase 2
+FR-16
+Asynchronous processing with status polling for large documents.
+Phase 2
+8.1 Non-Functional Requirements
+Category
+Requirement
+Performance
+Small text analysis < 3 s; typical PDF end-to-end < 12 s (see Testing document for full table)
+Determinism
+Same input + config + pipeline version yields identical topics and scores
+Accessibility
+WCAG 2.2 AA target; keyboard operable; priority never conveyed by color alone
+Responsiveness
+Mobile, tablet, laptop, desktop, large desktop layouts
+Privacy
+MVP stores nothing server-side; uploads processed in memory; text never logged
+Security
+File validation, size limits, rate limiting, CORS allow-list, secrets in env vars
+Reliability
+Graceful, user-friendly errors; no stack traces exposed
+Cost
+Free/open-source stack; no mandatory paid API
+Maintainability
+Modular services, typed code, unit tests on scoring logic
+Scalability
+Stateless API; ready for background workers, caching, more languages
+
+
+--- Page 11 ---
+Study Topic Extractor  |  Product Requirements Document  |  v1.0
+Page 10
+9. Scope: MVP, Phase 2, Future
+MVP (achievable by one student
+developer)
+Phase 2
+Future
+Text input; PDF upload; PyMuPDF
+extraction; preprocessing; n-grams;
+TF-IDF; keywords; topic ranking;
+priority; extractive summaries;
+results dashboard; export (PDF, CSV,
+TXT); light/dark theme; stateless
+backend
+Sentence Transformers; semantic
+relevance; clustering; hierarchy;
+relationship graph; Exam Focus Mode;
+question generation; OCR; Supabase
+auth, DB, storage; history; study
+sessions; settings; async jobs;
+LLM-hybrid summaries (optional)
+Study plans; revision schedule;
+flashcards, quizzes, MCQs; spaced
+repetition; weak-topic detection;
+multi-document comparison; voice
+input; multilingual (Hindi, Gujarati);
+mobile app; teacher dashboard;
+collaborative rooms; AI study
+assistant
+SCOPE RULE. Anything not in the MVP column must not be built until the MVP acceptance criteria pass.
+
+
+--- Page 12 ---
+Study Topic Extractor  |  Product Requirements Document  |  v1.0
+Page 11
+10. Success Metrics
+Metric
+Target
+Measurement
+Time to first result (typical PDF)
+< 12 s p90
+Backend latency logs + frontend timing
+Topic quality F1@10 vs gold set
+MVP >= 0.55; Phase 2 >=
+0.65
+scripts/evaluate.py on labeled documents
+Top-10 accuracy (gold topics in top 10)
+MVP >= 0.60; Phase 2 >=
+0.70
+Evaluation script
+Successful analysis rate
+>= 97% of valid inputs
+Error-code counts
+Export success rate
+>= 99%
+Export endpoint status codes
+User-rated usefulness (pilot)
+>= 4.0 / 5
+In-app one-tap rating (optional)
+Accessibility
+0 critical axe violations
+Automated + manual audit
+10.1 Definition of MVP Success
+ 1. A user uploads a study PDF.
+2. Text is extracted automatically.
+3. Important topics are identified and ranked.
+4. Keywords are visible.
+5. High/Medium/Low priority is shown.
+6. Short topic explanations are shown.
+7. Results can be exported.
+Phase 2 success additionally requires topic relationships, Exam Focus Mode and saved history.
+
+
+--- Page 13 ---
+Study Topic Extractor  |  Product Requirements Document  |  v1.0
+Page 12
+11. Constraints, Assumptions, Limitations
+11.1 Product Constraints
+  Free/open-source tooling; LLM APIs optional.
+ Buildable by a student developer; no distributed architecture in MVP.
+ English first; architecture must not block Hindi or Gujarati later.
+ No payment or social features.
+11.2 Assumptions
+  Inputs are mostly English, text-based, academic material.
+ Users accept that importance is inferred from document signals, not from an exam syllabus.
+ Users have a modern browser; mobile Safari and Chrome are supported.
+ Typical documents are 500 to 30,000 words.
+11.3 Limitations
+  Poorly written or very short notes reduce quality.
+ TF-IDF alone cannot understand meaning; semantic layer arrives in Phase 2.
+ Scanned PDFs need OCR (Phase 2). Diagrams and complex math notation are not analyzed.
+ Ambiguous or domain-specific terminology may be missed.
+ Very long unstructured documents lose precision without sectioning.
+
+
+--- Page 14 ---
+Study Topic Extractor  |  Product Requirements Document  |  v1.0
+Page 13
+12. Risks and Mitigations
+Risk
+Likelihood
+Impact
+Mitigation
+Poor topic quality on some
+domains
+Medium
+High
+Gold-set evaluation; tunable weights; noun-phrase and PMI
+filters; user feedback loop
+Scanned or badly formatted
+PDFs
+High
+Medium
+Extraction-quality score, clear warning, OCR in Phase 2
+Scope creep beyond MVP
+High
+High
+Strict MVP list; agent rule: no new features without approval
+Privacy incident with
+uploaded notes
+Low
+High
+Stateless MVP, private storage, RLS, no content logging,
+deletion endpoints
+Model memory too large for
+free hosting
+Medium
+Medium
+MVP has no torch; Phase 2 sized deployment (2 GB) or
+CPU-only wheels
+Abuse / spam uploads
+Medium
+Medium
+Rate limits, size limits, validation, optional CAPTCHA later
+User over-trusts scores
+Medium
+Medium
+Explainable component breakdown; disclaimer copy
+
+
